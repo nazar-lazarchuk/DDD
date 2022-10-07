@@ -3,6 +3,9 @@
 module.exports = {
     appPort: 8001,
 
+    /** @type {'fastify' | 'native'} */
+    framework: 'fastify',
+
     /** @type {'ws' | 'http'} */
     transport: 'http',
 

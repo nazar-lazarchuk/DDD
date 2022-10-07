@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require('node:http');
+const provideArguments = require('../../di');
 
 const receiveArgs = async (req) => {
   const buffers = [];
@@ -17,18 +18,9 @@ module.exports = (routing, port) => {
     if (!entity) return res.end('Not found');
     const handler = entity[method];
     if (!handler) return res.end('Not found');
-    const requestBody = await receiveArgs(req);
+    const body = await receiveArgs(req);
     console.log(`${socket.remoteAddress} ${method} ${url}`);
-  
-    // DI
-    const src = handler.toString();
-    const paramSignature = src.substring(src.indexOf('(') + 1, src.indexOf(')'));
-    const params = paramSignature.split(',').map(s => s.trim());
-    const args = params.map(
-      param => param.startsWith('{') ? requestBody.record : requestBody[param]
-    );
-    const result = await handler(...args);
-
+    const result = await handler(...provideArguments(body, handler));
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', '*');
     res.setHeader('Access-Control-Allow-Headers', '*');
