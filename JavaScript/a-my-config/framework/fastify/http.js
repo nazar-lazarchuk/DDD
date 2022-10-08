@@ -5,7 +5,7 @@ const fastify = require('fastify')({ logger: false });
 fastify.register(cors, {});
 const provideArguments = require('../../di');
 
-module.exports = (routing, port) => {
+module.exports = (routing, port, console) => {
     const entities = Object.keys(routing);
     for (const entity of entities) {
         const methods = Object.keys(routing[entity]);

@@ -3,10 +3,10 @@
 const fsp = require('node:fs').promises;
 const path = require('node:path');
 const config = require('./config');
-const server = require(`./framework/${config.framework}/${config.transport}.js`);
+const server = require(`./framework/${config.api.framework}/${config.api.transport}.js`);
 const staticServer = require('./static.js');
-const load = require('./load.js');
-const db = require('./db.js');
+const load = require('./load.js')(config.sandbox);
+const db = require('./db.js')(config.db);
 const hash = require('./hash.js');
 const logger = require('./logger.js');
 
@@ -27,6 +27,6 @@ const routing = {};
     routing[serviceName] = await load(filePath, sandbox);
   }
 
-  staticServer('./static', config.staticPort);
-  server(routing, config.appPort);
+  staticServer(config.static.dir, config.static.port, logger);
+  server(routing, config.api.port, logger);
 })();

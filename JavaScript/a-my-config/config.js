@@ -1,15 +1,25 @@
 'use strict';
 
 module.exports = {
-    appPort: 8001,
+    static: {
+        port: 8000,
+        dir: './static',
+    },
 
-    /** @type {'fastify' | 'native'} */
-    framework: 'fastify',
+    api: {
+        port: 8001,
 
-    /** @type {'ws' | 'http'} */
-    transport: 'http',
+        /** @type {'native' | 'fastify'} */
+        framework: 'fastify',
 
-    staticPort: 8000,
+        /** @type {'ws' | 'http'} */
+        transport: 'http',
+    },
+
+    sandbox: {
+        timeout: 5000,
+        displayErrors: false,
+    },
 
     db: {
         host: '127.0.0.1',
